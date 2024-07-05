@@ -23,11 +23,6 @@ contract SpawningStone is ERC721, Ownable {
     event GlobalTraitAdded(string traitName);
     event TraitAdded(uint indexed tokenID, string traitName, bool value);
 
-    function initialize() initializer public {
-        __ERC721_init("Spawning Stone", "SPAWN STONE");
-        __Ownable_init();
-    }
-
     constructor() ERC721("Spawning Stone", "SPAWN STONE") {
     }
 

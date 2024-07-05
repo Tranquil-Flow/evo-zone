@@ -24,7 +24,7 @@ contract PlayerBattle {
     mapping(address => BattleOffers[]) public battleOfferList;
 
     event BattleOfferOpened(address monsterInitiatingBattle, address monsterReceivingBattleOffer, uint battleDeadline);
-    event BattleOfferClosed(address monsterInitiatingBattle, address monsterReceivingBattleOffer)
+    event BattleOfferClosed(address monsterInitiatingBattle, address monsterReceivingBattleOffer);
     event BattleStarted(address monsterA, address monsterB, uint battleStartTime);
     event BattleFinished(address monsterA, address monsterB, uint battleFinishTime, address winner);
 
@@ -57,7 +57,7 @@ contract PlayerBattle {
         
         uint _battleID = totalBattles++;
 
-        battles.push(Battles(_battleID, monsterFighting, monsterAcceptingOffer, 0))
+        battles.push(Battles(_battleID, monsterFighting, monsterAcceptingOffer, 0));
         emit BattleStarted(monsterFighting, monsterAcceptingOffer, block.timestamp);
     }
 
