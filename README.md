@@ -3,10 +3,10 @@ Blockchain based battle game with evolving monsters
 
 ## Monsters
 - Attributes
- - Health
- - Attack
- - Defence
- - Speed
+    - Health
+    - Attack
+    - Defence
+    - Speed
 - Traits
 
 ### Attributes
