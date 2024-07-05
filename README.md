@@ -1,6 +1,27 @@
 # evo-zone
 Blockchain based battle game with evolving monsters
 
+## Monsters
+- Attributes
+ - Health
+ - Attack
+ - Defence
+ - Speed
+- Traits
+
+### Attributes
+
+#### Health
+
+#### Attack
+
+#### Defence
+
+#### Speed
+
+### Traits
+- 
+- 
 
 ## Spawning Monsters
 - Players can create a SpawningStone, which holds their accumulated Souls & Traits.
@@ -10,3 +31,5 @@ Blockchain based battle game with evolving monsters
 ## Fight System
 
 ## Breeding System
+- All Monsters have DNA
+

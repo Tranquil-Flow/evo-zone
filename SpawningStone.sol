@@ -1,18 +1,30 @@
 pragma solidity 0.8.25;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 // TO-DO: Only msg.sender can mint? (AA impllications?)
 
-contract SpawningStone is ERC721 {
+contract SpawningStone is Initializable, ERC721Upgradeable, OwnableUpgradeable {
     mapping(uint256 => string) private _tokenURIs;
     uint256 private _currentTokenId;
 
-    struct TraitList {
-        bool traitA;
+    struct Trait {
+        string name;
+        bool value;
     }
 
-    mapping(address => TraitList) public traitList;
+    mapping(uint => mapping(string => bool)) public traits;   // tokenId => (traitName => traitValue)
+
+    error TokenDoesNotExist(uint256 tokenId);
+
+    event TraitAdded(uint indexed tokenID, string traitName, bool value);
+
+    function initialize() initializer public {
+        __ERC721_init("Spawning Stone", "SPAWN STONE");
+        __Ownable_init();
+    }
 
     constructor() ERC721("Spawning Stone", "SPAWN STONE") {
     }
@@ -33,9 +45,10 @@ contract SpawningStone is ERC721 {
         return _tokenURIs[tokenId];
     }
 
-    function addTrait() external {
-        // TO-DO: add check for valid calls only
-        // TO:DO make modular for all traits
-
+    function addTrait(uint256 tokenId, string memory traitName, bool value) external onlyOwner {
+        if (!_exists(tokenId)) {revert TokenDoesNotExist(tokenId);}
+        tokenTraits[tokenId][traitName] = value;
+        emit TraitAdded(tokenId, traitName, value);
     }
+
 }

@@ -2,7 +2,7 @@ pragma solidity 0.8.25;
 
 // Import Monster.sol interface
 
-contract Battle {
+contract PlayerBattle {
 
     uint totalBattles;
 
