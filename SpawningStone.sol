@@ -4,11 +4,12 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 // TO-DO: Only msg.sender can mint? (AA impllications?)
+// TO-DO: Implement logic for minting monsters with determined Attribute levels
 
 contract SpawningStone is ERC721, Ownable {
-    mapping(uint256 => string) private _tokenURIs;
-    uint256 private _currentTokenId;
-
+    mapping(uint => string) private _tokenURIs;
+    uint private _currentTokenId;
+    
     struct Trait {
         string name;
         bool value;
@@ -16,8 +17,9 @@ contract SpawningStone is ERC721, Ownable {
 
     string[] public traitList;
     mapping(uint => mapping(string => bool)) public spawningStoneTraits;   // tokenId => (traitName => traitValue)
+    mapping(uint => uint) public spawningStoneSouls;
 
-    error TokenDoesNotExist(uint256 tokenId);
+    error TokenDoesNotExist(uint tokenId);
     error TraitNotValid(string traitName);
 
     event GlobalTraitAdded(string traitName);
@@ -26,42 +28,42 @@ contract SpawningStone is ERC721, Ownable {
     constructor() ERC721("Spawning Stone", "SPAWN STONE") {
     }
 
-    function mint(address to, string memory _tokenURI) external returns (uint256) {
+    function mint(address to, string memory _tokenURI) external returns (uint) {
         _currentTokenId++;
-        uint256 newTokenId = _currentTokenId;
+        uint newTokenId = _currentTokenId;
         _safeMint(to, newTokenId);
         _setTokenURI(newTokenId, _tokenURI);
         return newTokenId;
     }
 
-    function _setTokenURI(uint256 tokenId, string memory _tokenURI) internal {
+    function _setTokenURI(uint tokenId, string memory _tokenURI) internal {
         _tokenURIs[tokenId] = _tokenURI;
     }
 
-    function tokenURI(uint256 tokenId) public view override returns (string memory) {
+    function tokenURI(uint tokenId) public view override returns (string memory) {
         return _tokenURIs[tokenId];
     }
 
-    function getTrait(uint256 tokenId, string memory traitName) public view returns (bool) {
+    function getTrait(uint tokenId, string memory traitName) public view returns (bool) {
         if (!_exists(tokenId)) {
             revert TokenDoesNotExist(tokenId);
         }
         return tokenTraits[tokenId][traitName];
     }
 
-    function getTraits(uint256 tokenId) public view returns (string[] memory) {
+    function getTraits(uint tokenId) public view returns (string[] memory) {
         if (!_exists(tokenId)) {revert TokenDoesNotExist(tokenId);}
 
-        uint256 count;
-        for (uint256 i = 0; i < traitList.length; i++) {
+        uint count;
+        for (uint i = 0; i < traitList.length; i++) {
             if (tokenTraits[tokenId][traitList[i]]) {
                 count++;
             }
         }
 
         string[] memory traits = new string[](count);
-        uint256 index;
-        for (uint256 i = 0; i < traitList.length; i++) {
+        uint index;
+        for (uint i = 0; i < traitList.length; i++) {
             if (tokenTraits[tokenId][traitList[i]]) {
                 traits[index] = traitList[i];
                 index++;
@@ -71,7 +73,7 @@ contract SpawningStone is ERC721, Ownable {
         return traits;
     }
 
-    function addTraitToSpawningStone(uint256 tokenId, string memory traitName, bool value) external onlyOwner {
+    function addTraitToSpawningStone(uint tokenId, string memory traitName, bool value) external onlyOwner {
         if (!_exists(tokenId)) {revert TokenDoesNotExist(tokenId);}
         if (!isValidTrait(traitName)) {revert TraitNotValid(traitName);}
         spawningStoneTraits[tokenId][traitName] = value;
@@ -81,6 +83,12 @@ contract SpawningStone is ERC721, Ownable {
     function addGlobalTrait(string memory traitName) external onlyOwner {
         traitList.push(traitName);
         emit GlobalTraitAdded(traitName);
+    }
+
+    function addSouls(uint tokenID, uint amount) external onlyOwner {
+        spawningStoneSouls[tokenID] += amount;
+        uint newSoulsAmount = spawningStoneSouls[tokenID];
+        emit SoulsAdded(tokenID, amount, newSoulsAmount);
     }
 
 }
