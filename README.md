@@ -1,35 +1,66 @@
-# evo-zone
-Blockchain based battle game with evolving monsters
+## Foundry
 
-## Monsters
-- Attributes
-    - Health
-    - Attack
-    - Defence
-    - Speed
-- Traits
+**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
 
-### Attributes
+Foundry consists of:
 
-#### Health
+-   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
+-   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
+-   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
+-   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
 
-#### Attack
+## Documentation
 
-#### Defence
+https://book.getfoundry.sh/
 
-#### Speed
+## Usage
 
-### Traits
-- 
-- 
+### Build
 
-## Spawning Monsters
-- Players can create a SpawningStone, which holds their accumulated Souls & Traits.
-- Souls are used to spawn Monsters. The more powerful a monster, the more Souls are needed.
-- Traits can be imbued into Monsters on spawning, giving that Monster new abilities.
+```shell
+$ forge build
+```
 
-## Fight System
+### Test
 
-## Breeding System
-- All Monsters have DNA
+```shell
+$ forge test
+```
 
+### Format
+
+```shell
+$ forge fmt
+```
+
+### Gas Snapshots
+
+```shell
+$ forge snapshot
+```
+
+### Anvil
+
+```shell
+$ anvil
+```
+
+### Deploy
+
+```shell
+$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+```
+
+### Cast
+
+```shell
+$ cast <subcommand>
+```
+
+### Help
+
+```shell
+$ forge --help
+$ anvil --help
+$ cast --help
+```
